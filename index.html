@@ -10,27 +10,35 @@
         li { margin: 10px 0; }
         a { text-decoration: none; color: #0066cc; }
         a:hover { text-decoration: underline; }
-        .folder { margin-top: 20px; font-weight: bold; }
+        .folder { margin-top: 20px; font-weight: bold; font-size: 1.2em; }
     </style>
 </head>
 <body>
     <h1>Biblioteca de Normas Técnicas</h1>
-    
+
     <div class="folder">RETIE</div>
-    <ul>
-        <li><a href="normas/retie/retie-2024.pdf" target="_blank">RETIE 2024 (PDF)</a></li>
-        <!-- Aquí se agregarán más PDFs de RETIE -->
-    </ul>
+    <ul id="retie"></ul>
 
     <div class="folder">NTC</div>
-    <ul>
-        <!-- Agregar PDFs de NTC aquí -->
-    </ul>
+    <ul id="ntc"></ul>
 
     <div class="folder">CREG</div>
-    <ul>
-        <!-- Agregar PDFs de CREG aquí -->
-    </ul>
+    <ul id="creg"></ul>
 
+    <script>
+        fetch('normas.json')
+        .then(response => response.json())
+        .then(data => {
+            for (let categoria in data) {
+                let ul = document.querySelector(`#${categoria}`);
+                data[categoria].forEach(item => {
+                    let li = document.createElement('li');
+                    li.innerHTML = `<a href="${item.ruta}" target="_blank">${item.nombre} (PDF)</a>`;
+                    ul.appendChild(li);
+                });
+            }
+        })
+        .catch(err => console.error("Error cargando normas.json:", err));
+    </script>
 </body>
 </html>
